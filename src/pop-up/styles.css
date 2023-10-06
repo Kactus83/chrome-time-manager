@@ -1,4 +1,33 @@
 body {
-    padding: 10px;
     font-family: Arial, sans-serif;
+    background-color: #f8f8f8;
+    margin: 0;
+    padding: 10px;
+}
+
+h1 {
+    color: #333;
+}
+
+#stats-container {
+    background-color: #fff;
+    border-radius: 5px;
+    padding: 10px;
+    margin-top: 10px;
+}
+
+h2 {
+    margin-top: 0;
+}
+
+#total-time, #time-per-site {
+    margin-bottom: 10px;
+}
+
+ul {
+    padding-left: 20px;
+}
+
+li {
+    margin-bottom: 5px;
 }

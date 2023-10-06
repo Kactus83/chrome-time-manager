@@ -1,14 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chrome Time Manager</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-    <h1>Chrome Time Manager</h1>
-    <!-- Your UI elements go here -->
-    <script src="index.js"></script>
-</body>
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Chrome Time Manager</title>
+        <link rel="stylesheet" href="styles.css">
+    </head>
+
+    <body>
+        <h1>Chrome Time Manager</h1>
+        <div id="stats-container">
+            <h2>Stats</h2>
+            <div id="total-time">Total Time Spent: <span id="total-time-spent">0</span> sec</div>
+            <div id="time-per-site">Time per Site: <ul id="time-per-site-list"></ul></div>
+        </div>
+
+        <script src="index.js"></script>
+        
+    </body>
+
 </html>

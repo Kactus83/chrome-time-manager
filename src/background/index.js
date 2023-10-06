@@ -1,3 +1,8 @@
+/**
+ * =====================================
+ * SECTION 1: Session Object & Management
+ * =====================================
+ */
 let currentSession = {
   domain: null, 
   startTimestamp: null,
@@ -10,6 +15,51 @@ let currentSession = {
   }
 };
 
+function startNewSession(tabId) {
+  chrome.tabs.get(tabId, (tab) => {
+      currentSession.domain = new URL(tab.url).hostname;
+      currentSession.startTimestamp = new Date().getTime();
+      currentSession.endTimestamp = null;
+  });
+}
+
+function endCurrentSession() {
+  if (currentSession.domain) {
+      currentSession.endTimestamp = new Date().getTime();
+      
+      const duration = currentSession.getDuration();
+      
+      // Save and Reset session
+      saveSession(currentSession);
+      currentSession.domain = null;
+      currentSession.startTimestamp = null;
+      currentSession.endTimestamp = null;
+  }
+}
+
+/**
+ * =====================
+ * SECTION 2: Data Storage
+ * =====================
+ */
+function saveSession(session) {
+  session.duration = session.getDuration();
+  session.date = new Date(session.startTimestamp).toLocaleDateString();
+
+  chrome.storage.local.get(['sessions'], (result) => {
+    let sessions = result.sessions || [];
+    sessions.push(session);
+    chrome.storage.local.set({sessions}, () => {
+      console.log('Session saved:', session);
+    });
+  });
+}
+
+/**
+ * ========================================
+ * SECTION 3: Event Listeners and Triggers
+ * ========================================
+ */
 chrome.tabs.onActivated.addListener(activeInfo => {
   endCurrentSession();
   startNewSession(activeInfo.tabId);
@@ -34,32 +84,3 @@ chrome.windows.onFocusChanged.addListener((windowId) => {
       });
   }
 });
-
-function startNewSession(tabId) {
-  chrome.tabs.get(tabId, (tab) => {
-      currentSession.domain = new URL(tab.url).hostname;
-      currentSession.startTimestamp = new Date().getTime();
-      currentSession.endTimestamp = null;
-      console.log('New session started:', currentSession);
-  });
-}
-
-function endCurrentSession() {
-  if (currentSession.domain) {
-      currentSession.endTimestamp = new Date().getTime();
-      console.log('Session ended:', currentSession);
-      
-      const duration = currentSession.getDuration();
-      console.log('Duration:', duration, 'seconds');
-      
-      // Save and Reset session
-      saveSession(currentSession);
-      currentSession.domain = null;
-      currentSession.startTimestamp = null;
-      currentSession.endTimestamp = null;
-  }
-}
-
-function saveSession(session) {
-  console.log(session);
-}
