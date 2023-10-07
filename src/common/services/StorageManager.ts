@@ -4,8 +4,9 @@ import MainSession from '../models/MainSession';
  * StorageManager - Handles the storage operations related to MainSession instances.
  */
 export default class StorageManager {
+    
     /**
-     * saveMainSession - Saves a MainSession instance to local storage.
+     * saveMainSession - Saves a MainSession instance to local storage and logs the action.
      * 
      * @param mainSession - The MainSession instance to be saved.
      */
@@ -20,7 +21,7 @@ export default class StorageManager {
     }
 
     /**
-     * updateMainSession - Updates the last saved MainSession instance in local storage.
+     * updateMainSession - Updates the last saved MainSession instance in local storage and logs the action or an error if no sessions are found.
      * 
      * @param updatedSession - The MainSession instance with updated data.
      */
@@ -39,18 +40,21 @@ export default class StorageManager {
     }
 
     /**
-     * getMainSessions - Retrieves all MainSession instances from local storage and provides them to a callback function.
+     * getMainSessions - Retrieves all MainSession instances from local storage and provides them to a callback function, logging an error if none are found.
      * 
      * @param callback - The function to be called with the retrieved MainSessions.
      */
     static getMainSessions(callback: (sessions: MainSession[]) => void): void {
         chrome.storage.local.get(['mainSessions'], (result) => {
+            if (!result.mainSessions) {
+                console.error('No MainSessions found.');
+            }
             callback(result.mainSessions || []);
         });
     }
 
     /**
-     * clearMainSessions - Clears all MainSession instances from local storage.
+     * clearMainSessions - Clears all MainSession instances from local storage and logs the action.
      */
     static clearMainSessions(): void {
         chrome.storage.local.set({mainSessions: []}, () => {
