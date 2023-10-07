@@ -15,10 +15,13 @@ export default class SessionManager {
     }
 
     /**
-     * startNewMainSession - Initializes and sets the starting time for a new MainSession.
+     * startNewMainSession - Initializes and sets the starting time for a new MainSession and saves it immediately.
      */
     startNewMainSession(): void {
         this.currentMainSession = new MainSession(new Date().getTime());
+        if (this.currentMainSession) {
+            StorageManager.saveMainSession(this.currentMainSession);
+        }
     }
 
     /**
@@ -30,7 +33,7 @@ export default class SessionManager {
         const domain = new URL(tab.url || '').hostname;
         this.currentTabSession = new TabSession(domain, new Date().getTime());
     }
-
+    
     /**
      * endCurrentTabSession - Marks the end of the current TabSession, saves it to the current MainSession, and resets the current TabSession.
      */
@@ -39,17 +42,19 @@ export default class SessionManager {
             this.currentTabSession.endSession(new Date().getTime());
             this.currentMainSession?.addTabSession(this.currentTabSession);
             this.currentTabSession = null;
+            if(this.currentMainSession) {
+                StorageManager.updateMainSession(this.currentMainSession);
+            }
         }
     }
 
     /**
-     * endCurrentMainSession - Marks the end of the current MainSession, saves it using StorageManager, and starts a new MainSession.
+     * endCurrentMainSession - Marks the end of the current MainSession and updates it using StorageManager without starting a new MainSession.
      */
     endCurrentMainSession(): void {
         if (this.currentMainSession) {
             this.currentMainSession.endSession(new Date().getTime());
-            StorageManager.saveMainSession(this.currentMainSession);
-            this.startNewMainSession();
+            StorageManager.updateMainSession(this.currentMainSession);
         }
     }
 

@@ -6,14 +6,33 @@ document.addEventListener('DOMContentLoaded', () => {
     StorageManager.getMainSessions(displayStats);
 });
 
+/**
+ * Calculate and return the duration of a tab session.
+ *
+ * @param tabSession - The tab session to calculate the duration for.
+ * @returns - The duration of the tab session in seconds.
+ */
+function calculateTabSessionDuration(tabSession: TabSession): number {
+    if (tabSession.startTimestamp && tabSession.endTimestamp) {
+        return Math.floor((tabSession.endTimestamp - tabSession.startTimestamp) / 1000);
+    }
+    return 0;
+}
+
+/**
+ * Display statistics, including total time spent and time spent per site.
+ *
+ * @param mainSessions - Array of MainSession objects to calculate and display statistics for.
+ */
 function displayStats(mainSessions: MainSession[]): void {
     let totalTime = 0;
     let timePerSite: {[key: string]: number} = {};
 
     mainSessions.forEach((mainSession: MainSession) => {
         mainSession.tabSessions.forEach((tabSession: TabSession) => {
-            totalTime += tabSession.getDuration();
-            timePerSite[tabSession.domain] = (timePerSite[tabSession.domain] || 0) + tabSession.getDuration();
+            const duration = calculateTabSessionDuration(tabSession); // Using the new function
+            totalTime += duration;
+            timePerSite[tabSession.domain] = (timePerSite[tabSession.domain] || 0) + duration;
         });
     });
 

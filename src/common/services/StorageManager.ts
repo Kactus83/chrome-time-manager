@@ -20,6 +20,25 @@ export default class StorageManager {
     }
 
     /**
+     * updateMainSession - Updates the last saved MainSession instance in local storage.
+     * 
+     * @param updatedSession - The MainSession instance with updated data.
+     */
+    static updateMainSession(updatedSession: MainSession): void {
+        chrome.storage.local.get(['mainSessions'], (result) => {
+            let mainSessions: MainSession[] = result.mainSessions || [];
+            if(mainSessions.length > 0) {
+                mainSessions[mainSessions.length - 1] = updatedSession;
+                chrome.storage.local.set({mainSessions}, () => {
+                    console.log('MainSession updated:', updatedSession);
+                });
+            } else {
+                console.error('No MainSessions available to update.');
+            }
+        });
+    }
+
+    /**
      * getMainSessions - Retrieves all MainSession instances from local storage and provides them to a callback function.
      * 
      * @param callback - The function to be called with the retrieved MainSessions.

@@ -25,16 +25,4 @@ export default class TabSession {
     endSession(endTimestamp: number): void {
         this.endTimestamp = endTimestamp;
     }
-
-    /**
-     * getDuration - Retrieves the duration of the tab session, calculated from start and end timestamps.
-     * 
-     * @returns - The session duration in seconds.
-     */
-    getDuration(): number {
-        if (this.startTimestamp && this.endTimestamp) {
-            return Math.floor((this.endTimestamp - this.startTimestamp) / 1000);
-        }
-        return 0;
-    }
 }
