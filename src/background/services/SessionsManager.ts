@@ -9,6 +9,37 @@ export default class SessionsManager {
     currentMainSession: MainSession | null = null;
 
     /**
+     * verifyAndCloseLastMainSession - Checks if the last MainSession in storage was ended correctly and
+     * corrects it if not by setting its endTimestamp to the last endTimestamp of its TabSessions.
+     */
+    async verifyAndCloseLastMainSession(): Promise<void> {
+        try {
+            // Get the last MainSession from storage
+            const lastMainSession = await StorageManager.getLastMainSession();
+            
+            if (lastMainSession && !lastMainSession.endTimestamp) {
+                console.log('Last MainSession was not ended correctly. Correcting...');
+                
+                // Find the latest endTimestamp from its TabSessions
+                const latestTabSessionEndTimestamp = lastMainSession.tabSessions.reduce((latest, session) => {
+                    // If session.endTimestamp is null, keep the existing latest timestamp
+                    return session.endTimestamp 
+                        ? Math.max(latest, session.endTimestamp)
+                        : latest;
+                }, lastMainSession.startTimestamp);  // Start with the startTimestamp of the MainSession
+                
+                // Use the latest endTimestamp found, or the MainSession's startTimestamp if none was found
+                lastMainSession.endTimestamp = latestTabSessionEndTimestamp;
+                
+                // Update the corrected MainSession back to storage
+                await StorageManager.updateMainSession(lastMainSession);
+            }
+        } catch (error) {
+            console.error('Error verifying last MainSession:', error);
+        }
+    }
+
+    /**
      * startMainSession - Starts a new MainSession, logs its creation, saves it using StorageManager.
      */
     startMainSession(): void {
@@ -18,6 +49,7 @@ export default class SessionsManager {
         }
         
         console.log('Starting new MainSession...');
+        this.verifyAndCloseLastMainSession();
         this.currentMainSession = new MainSession(Date.now());
         StorageManager.saveMainSession(this.currentMainSession);
     }

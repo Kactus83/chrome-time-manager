@@ -52,6 +52,28 @@ export default class StorageManager {
             callback(result.mainSessions || []);
         });
     }
+    
+    /**
+     * getLastMainSession - Retrieves the last MainSession instance from local storage and provides it to a callback function, or logs an error if none are found.
+     * 
+     * @returns Promise<MainSession | null> - A promise that resolves with the last MainSession or null if none are found.
+     */
+    static getLastMainSession(): Promise<MainSession | null> {
+        return new Promise((resolve, reject) => {
+            chrome.storage.local.get(['mainSessions'], (result) => {
+                let mainSessions: MainSession[] = result.mainSessions || [];
+                if (mainSessions.length > 0) {
+                    // Retrieve the last MainSession and resolve the promise with it
+                    resolve(mainSessions[mainSessions.length - 1]);
+                } else {
+                    // Log an error and resolve the promise with null
+                    console.error('No MainSessions found.');
+                    resolve(null);
+                }
+            });
+        });
+    }
+
 
     /**
      * clearMainSessions - Clears all MainSession instances from local storage and logs the action.
