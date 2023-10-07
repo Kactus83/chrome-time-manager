@@ -53,3 +53,23 @@ li {
 li:hover {
     background-color: #ddd;
 }
+
+button {
+    background-color: #4a76a8;  
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 10px;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #3a6698;  
+}
+
+button:active {
+    background-color: #2a5568;  
+}

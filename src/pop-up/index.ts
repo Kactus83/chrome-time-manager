@@ -2,9 +2,27 @@ import StorageManager from '../common/services/StorageManager';
 import MainSession from '../common/models/MainSession';
 import TabSession from '../common/models/TabSession';
 
+
 document.addEventListener('DOMContentLoaded', () => {
     StorageManager.getMainSessions(displayStats);
+    initializeUIInteractions(); 
 });
+
+/**
+ * Initialize UI Interactions - Setup the event listeners related to UI interactions.
+ */
+function initializeUIInteractions(): void {
+    setupStatisticsButton();
+}
+
+/**
+ * Setup Statistics Button - Add event listener to the statistics button to open the advanced statistics page.
+ */
+function setupStatisticsButton(): void {
+    document.getElementById('viewStatistics')?.addEventListener('click', () => {
+        chrome.tabs.create({ url: chrome.runtime.getURL('src/dashboard/index.html') });
+    });
+}
 
 /**
  * Calculate and return the duration of a tab session.
