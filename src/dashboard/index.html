@@ -3,12 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="styles/styles.css">
+    <link rel="stylesheet" href="./styles.css">
     <title>Statistics</title>
 </head>
 <body>
     <h1>Statistics</h1>
-    <!-- Votre contenu de page ici -->
+    
+    <div class="stat-card" id="total-time-card">
+        <h2>Total Time Spent</h2>
+        <p id="total-time">0 sec</p>
+    </div>
+    
+    <div class="stat-card" id="daily-time-card">
+        <h2>Daily Average Time</h2>
+        <p id="daily-average-time">0 sec</p>
+    </div>
+    
+    <div class="stat-card" id="most-visited-sites-card">
+        <h2>Top 5 Visited Sites</h2>
+        <ul id="most-visited-sites-list"></ul>
+    </div>
 
     <script src="./index.js"></script>
 </body>

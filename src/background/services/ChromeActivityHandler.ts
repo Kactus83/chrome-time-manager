@@ -63,8 +63,6 @@ export default class ChromeActivityHandler {
                     this.sessionsManager.startTabSession(domain);
                 }
             });
-        } else {
-            //this.sessionsManager.endMainSession();
         }
     }
 
@@ -75,7 +73,7 @@ export default class ChromeActivityHandler {
         // Check if there are no more windows open
         chrome.windows.getAll({}, (windows) => {
             if (windows.length === 0) {
-                //this.sessionsManager.endMainSession();
+                this.sessionsManager.endMainSession();
             }
         });
     }
