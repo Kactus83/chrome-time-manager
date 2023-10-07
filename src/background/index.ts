@@ -5,7 +5,7 @@ import ChromeTabActivityHandler from './services/ChromeTabActivityHandler';
 /**
  * Entry Point - Instantiates session management and activates handlers for Chrome window and tab activities.
  */
-class Background {
+class BackgroundService {
     private sessionsManager: SessionsManager;
     private chromeMainActivityHandler: ChromeMainActivityHandler;
     private chromeTabActivityHandler: ChromeTabActivityHandler;
@@ -21,4 +21,4 @@ class Background {
 }
 
 // Initialize the application.
-new Background();
+new BackgroundService();
