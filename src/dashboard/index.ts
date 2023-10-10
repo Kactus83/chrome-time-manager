@@ -27,7 +27,7 @@ function displayTotalTime(mainSessions: MainSession[]): void {
 }
 
 function displayDailyAverageTime(mainSessions: MainSession[]): void {
-    // Note: This assumes that your MainSession objects are sorted by date.
+    // Note: This assumes that MainSession objects are sorted by date.
     // If this is not the case, additional sorting logic may be required.
     
     let totalDays = 0;
